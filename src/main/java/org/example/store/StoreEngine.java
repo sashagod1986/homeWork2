@@ -1,5 +1,6 @@
 package org.example.store;
 
+import org.example.manufacturer.Manufacturer;
 import org.example.utils.Utils;
 
 import java.io.*;
@@ -62,19 +63,49 @@ public class StoreEngine {
                 }
             }
             if (menu == 2) {
-
+                int menu2 = 1;
+                while(menu2 != 0){
+                    System.out.println("""
+                    1. add souvenir
+                    2. read souvenir
+                    3. edit souvenir
+                    0. exit
+                    """);
+                    menu2 = Utils.getDigit(0,3,"enter menu item","wrong menu item");
+                    if (menu2 == 1) {
+                        store.addSouvenir(store.getManufacturer(Utils.getDigit(1,store.getManufacturerSize(),"enter manufacturer index","wrong manufacturer index")-1));
+                    }
+                    if (menu2 == 2) {
+                        if (store.getSouvenirSize() > 0) {
+                            store.listSouvenirs();
+                        } else {
+                            System.out.println("no souvenir");
+                        }
+                    }
+                    if (menu2 == 3) {
+                        if (store.getSouvenirSize() > 0) {
+                            store.changeSouvenir(Utils.getDigit(1,store.getSouvenirSize(),"enter manufacturer index","wrong manufacturer index")-1);
+                        } else {
+                            System.out.println("no souvenir");
+                        }
+                    }
+                    Utils.waitEnter();
+                }
             }
             if (menu == 3) {
-
+                Manufacturer obj = store.getManufacturer(Utils.getDigit(1,store.getManufacturerSize(),"enter manufacturer index","wrong manufacturer index")-1);
+                store.getSouvenirs().stream().filter(x->x.getManufacturer().equals(obj)).forEach(System.out::println);
             }
             if (menu == 4) {
-
+                String country = Utils.getString(1,"enter country", "country empty");
+                store.getSouvenirs().stream().filter(x->x.getManufacturerCountry().equals(country)).forEach(System.out::println);
             }
             if (menu == 5) {
-
+                int cost = Utils.getDigit(1,100000,"enter souvenir price", "wrong souvenir price");
+                store.getSouvenirs().stream().filter(x->x.getPrice() < cost).forEach(System.out::println);
             }
             if (menu == 6) {
-
+//                store.manufacturers.stream().map(x->x.get);
             }
             if (menu == 7) {
 
