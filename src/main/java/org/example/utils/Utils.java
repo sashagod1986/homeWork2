@@ -56,9 +56,7 @@ public class Utils {
             dayS = "0" + day;
         } else {dayS = String.valueOf(months);}
         String date = year + "-" + monthsS + "-" + dayS;
-        System.out.println(date);
         LocalDate localDate = LocalDate.parse(date);
-        System.out.println("localDate " + localDate);
         return localDate;
     }
     public static void waitEnter(){

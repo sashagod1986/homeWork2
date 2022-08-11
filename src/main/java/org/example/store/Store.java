@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Store implements Serializable {
+    private static final long serialVersionUID = 8355739085133824134L;
     private String name;
     private List<Manufacturer> manufacturers;
     private List<Souvenir> souvenirs;
@@ -40,23 +41,22 @@ public class Store implements Serializable {
     public Manufacturer getManufacturer(int index){
         return manufacturers.get(index);
     }
+
+    public List<Manufacturer> getManufacturers() {
+        return manufacturers;
+    }
+
     public int getManufacturerSize(){
         return manufacturers.size();
     }
-    public void removeManufacturer(int index){
-        manufacturers.remove(index);
+    public void removeManufacturer(Manufacturer obj){
+        manufacturers.remove(obj);
     }
     public void changeManufacturer(int index){
         manufacturers.get(index).setName(Utils.getString(1,"enter name", "name empty"));
         manufacturers.get(index).setCountry(Utils.getString(1,"enter country", "country empty"));
     }
-    public void getAllSouvenir(){
-        souvenirs.forEach(System.out::println);
-    }
 
-    public void addSouvenir(Manufacturer manufacturer) {
-        addSouvenir();
-    }
     public void addSouvenir(){
         souvenirs.add(new Souvenir(getManufacturer(Utils.getDigit(1,getManufacturerSize(),"enter manufacturer index","wrong manufacturer index")-1),
                 Utils.getString(1,"enter name", "name empty"),
@@ -72,7 +72,11 @@ public class Store implements Serializable {
         return souvenirs.size();
     }
     public void listSouvenirs() {
-        souvenirs.forEach(System.out::println);
+        for(Souvenir obj: souvenirs){
+            System.out.print(souvenirs.indexOf(obj)+1 + " ");
+            System.out.println(obj);
+        }
+//        souvenirs.forEach(System.out::println);
     }
     public void changeSouvenir(int index) {
         souvenirs.get(index).setManufacturer(getManufacturer(Utils.getDigit(1,getManufacturerSize(),"enter manufacturer index","wrong manufacturer index")-1));
@@ -82,7 +86,5 @@ public class Store implements Serializable {
         souvenirs.get(index).setReleaseDate(Utils.getLocalDate());
         souvenirs.get(index).setPrice(Utils.getDigit(1,100000,"enter souvenir price", "wrong souvenir price"));
     }
-    public void getSouvenir(){
 
-    }
 }

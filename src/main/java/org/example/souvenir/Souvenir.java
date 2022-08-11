@@ -24,12 +24,12 @@ public class Souvenir implements Serializable {
     @Override
     public String toString() {
         return "Souvenir " +
-                "name='" + name + '\'' +
+                "name '" + name + '\'' +
                 ", manufacturerAddress='" + manufacturerAddress + '\'' +
                 ", manufacturerPhone='" + manufacturerPhone + '\'' +
                 ", releaseDate=" + releaseDate +
                 ", price=" + price +
-                ", manufacturer=" + manufacturer;
+                ", manufacturer " + manufacturer;
     }
 
     public String getName() {

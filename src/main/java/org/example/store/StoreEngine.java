@@ -4,6 +4,9 @@ import org.example.manufacturer.Manufacturer;
 import org.example.utils.Utils;
 
 import java.io.*;
+import java.time.LocalDate;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class StoreEngine {
     public static void storeEngine(){
@@ -26,12 +29,12 @@ public class StoreEngine {
                     4. list souvenir from country
                     5. list manufacturers of souvenirs that are cheaper than
                     6. list all manufacturer and their souvenirs
-                    7. list manufacturers of the given souvenir produced in the given
+                    7. list manufacturers of the given souvenir produced in the given 
                     8. list of souvenirs produced at year
                     9. delete manufacturer and his souvenirs
                     0. exit
                     """);
-            menu = Utils.getDigit(0,8,"enter menu item","wrong menu item");
+            menu = Utils.getDigit(0,9,"enter menu item","wrong menu item");
             if (menu == 1){
                 int menu1 = 1;
                 while(menu1 != 0){
@@ -73,7 +76,7 @@ public class StoreEngine {
                     """);
                     menu2 = Utils.getDigit(0,3,"enter menu item","wrong menu item");
                     if (menu2 == 1) {
-                        store.addSouvenir(store.getManufacturer(Utils.getDigit(1,store.getManufacturerSize(),"enter manufacturer index","wrong manufacturer index")-1));
+                        store.addSouvenir();
                     }
                     if (menu2 == 2) {
                         if (store.getSouvenirSize() > 0) {
@@ -81,6 +84,7 @@ public class StoreEngine {
                         } else {
                             System.out.println("no souvenir");
                         }
+                        Utils.waitEnter();
                     }
                     if (menu2 == 3) {
                         if (store.getSouvenirSize() > 0) {
@@ -89,33 +93,61 @@ public class StoreEngine {
                             System.out.println("no souvenir");
                         }
                     }
-                    Utils.waitEnter();
+
                 }
             }
             if (menu == 3) {
                 Manufacturer obj = store.getManufacturer(Utils.getDigit(1,store.getManufacturerSize(),"enter manufacturer index","wrong manufacturer index")-1);
                 store.getSouvenirs().stream().filter(x->x.getManufacturer().equals(obj)).forEach(System.out::println);
+                Utils.waitEnter();
             }
             if (menu == 4) {
                 String country = Utils.getString(1,"enter country", "country empty");
                 store.getSouvenirs().stream().filter(x->x.getManufacturerCountry().equals(country)).forEach(System.out::println);
+                Utils.waitEnter();
             }
             if (menu == 5) {
                 int cost = Utils.getDigit(1,100000,"enter souvenir price", "wrong souvenir price");
-                store.getSouvenirs().stream().filter(x->x.getPrice() < cost).forEach(System.out::println);
+                Set<Manufacturer> set = new HashSet<>(store.getSouvenirs().stream().filter(x->x.getPrice() < cost).map(x->x.getManufacturer()).toList());
+                System.out.println(set);
+                Utils.waitEnter();
             }
             if (menu == 6) {
-//                store.manufacturers.stream().map(x->x.get);
+                for (Manufacturer obj: store.getManufacturers()){
+                    System.out.println("Manufacturer " + obj);
+                    store.getSouvenirs().stream().filter(x->x.getManufacturer().equals(obj)).forEach(System.out::println);
+                }
+                Utils.waitEnter();
             }
             if (menu == 7) {
-
+                if (store.getSouvenirSize() > 0) {
+                    int year = Utils.getDigit(1900, LocalDate.now().getYear(), "enter year", "wrong year");
+                    Set<Manufacturer> set = new HashSet<>(store.getSouvenirs().stream().filter(x -> x.getReleaseDate().getYear() == year).map(x -> x.getManufacturer()).toList());
+                    System.out.println(set);
+                    Utils.waitEnter();
+                } else {
+                    System.out.println("no souvenir");
+                }
             }
             if (menu == 8) {
-
+                if (store.getSouvenirSize() > 0) {
+                    HashSet<Integer> yearsl = new HashSet<>(store.getSouvenirs().stream().map(x -> x.getReleaseDate().getYear()).toList());
+                    List<Integer> years = new ArrayList<>(yearsl);
+                    Collections.sort(years);
+                    for (int year : years) {
+                        System.out.println("year " + year);
+                        store.getSouvenirs().stream().filter(x -> x.getReleaseDate().getYear() == year).forEach(System.out::println);
+                    }
+                    Utils.waitEnter();
+                } else {
+                    System.out.println("no souvenir");
+                }
             }
             if (menu == 9) {
                 if (store.getManufacturerSize() > 0) {
-                    store.removeManufacturer(Utils.getDigit(1,store.getManufacturerSize(),"enter manufacturer index","wrong manufacturer index")-1);
+                    Manufacturer obj = store.getManufacturer(Utils.getDigit(1,store.getManufacturerSize(),"enter manufacturer index","wrong manufacturer index")-1);
+                    store.getSouvenirs().removeIf(x->x.getManufacturer().equals(obj));
+                    store.removeManufacturer(obj);
                 } else {
                     System.out.println("no manufacturer");
                 }
