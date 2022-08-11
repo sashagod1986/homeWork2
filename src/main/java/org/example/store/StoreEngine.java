@@ -143,7 +143,11 @@ public class StoreEngine {
                 if (store.getSouvenirSize() > 0) {
                     int year = Utils.getDigit(1900, LocalDate.now().getYear(), "enter year", "wrong year");
                     Set<Manufacturer> set = new HashSet<>(store.getSouvenirs().stream().filter(x -> x.getReleaseDate().getYear() == year).map(x -> x.getManufacturer()).toList());
-                    System.out.println(set);
+                    if (set.size() > 0) {
+                        System.out.println(set);
+                    } else {
+                        System.out.println("no souvenir in " + year + " year");
+                    }
                     Utils.waitEnter();
                 } else {
                     System.out.println("no souvenir");
