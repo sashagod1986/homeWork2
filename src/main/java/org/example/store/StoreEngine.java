@@ -155,9 +155,7 @@ public class StoreEngine {
             }
             if (menu == 8) {
                 if (store.getSouvenirSize() > 0) {
-                    HashSet<Integer> yearsl = new HashSet<>(store.getSouvenirs().stream().map(x -> x.getReleaseDate().getYear()).toList());
-                    List<Integer> years = new ArrayList<>(yearsl);
-                    Collections.sort(years);
+                    TreeSet<Integer> years = new TreeSet<>(store.getSouvenirs().stream().map(x -> x.getReleaseDate().getYear()).toList());
                     for (int year : years) {
                         System.out.println("year " + year);
                         store.getSouvenirs().stream().filter(x -> x.getReleaseDate().getYear() == year).forEach(System.out::println);
